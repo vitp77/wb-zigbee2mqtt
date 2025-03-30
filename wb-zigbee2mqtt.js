@@ -80,7 +80,7 @@ defineRule('Permit join', {
       //log.info("Состояние newValue: {}".format(newValue));
       //log.info("Состояние publish_lock: {}".format(publish_lock));
       if (!publish_lock) {
-        if ((!permit_join_info && newValue)|(permit_join_info && !newValue)) {
+        if ((!permit_join_info && newValue) | (permit_join_info && !newValue)) {
           //log.info("Состояние publish: {}".format(true));
           publish(base_topic + '/bridge/request/permit_join', payload);
         }
@@ -213,12 +213,33 @@ function initTracker(deviceName) {
           value: getControlValue(controlName, device[controlName], controlsTypes),
           readonly: true,
         });
+        if (controlName == 'action') {
+          getDevice(deviceName).addControl(controlName + '_counter', {
+            type: 'value',
+            value: 0,
+            readonly: true,
+          });
+        }
       } else {
-        dev[deviceName][controlName] = getControlValue(
+        var controlValue = getControlValue(
           controlName,
           device[controlName],
           controlsTypes
         );
+        if (controlName == 'action') {
+          if (dev[deviceName][controlName] == controlValue) {
+            getDevice(deviceName).getControl(controlName + '_counter').setValue({
+              value: dev[deviceName][controlName + '_counter']++,
+              notify: true
+            })
+          } else {
+            getDevice(deviceName).getControl(controlName + '_counter').setValue({
+              value: 0,
+              notify: false
+            })
+          }
+        }
+        dev[deviceName][controlName] = controlValue;
       }
     }
   });
