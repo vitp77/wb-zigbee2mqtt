@@ -229,7 +229,7 @@ function initTracker(deviceName) {
         if (controlName == 'action') {
           if (dev[deviceName][controlName] == controlValue) {
             getDevice(deviceName).getControl(controlName + '_counter').setValue({
-              value: dev[deviceName][controlName + '_counter']++,
+              value: ++dev[deviceName][controlName + '_counter'],
               notify: true
             })
           } else {
