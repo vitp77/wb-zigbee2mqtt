@@ -175,7 +175,7 @@ defineRule('Permit join', {
           var device = getDevice(v);
           if (device === undefined || !device.isVirtual()) {
             defineVirtualDevice(v, {
-              title: v,
+              //              title: v,
               cells: {},
             });
             initTracker(v);
@@ -206,7 +206,6 @@ function initTracker(deviceName) {
       if (controlName == '') {
         continue;
       }
-
       if (!getDevice(deviceName).isControlExists(controlName)) {
         getDevice(deviceName).addControl(controlName, {
           type: getControlType(controlName, controlsTypes),
@@ -231,12 +230,12 @@ function initTracker(deviceName) {
             getDevice(deviceName).getControl(controlName + '_counter').setValue({
               value: ++dev[deviceName][controlName + '_counter'],
               notify: true
-            })
+            });
           } else {
             getDevice(deviceName).getControl(controlName + '_counter').setValue({
               value: 0,
               notify: false
-            })
+            });
           }
         }
         dev[deviceName][controlName] = controlValue;
